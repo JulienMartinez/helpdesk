@@ -22,6 +22,10 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.stage_id = ticket.team_id._get_applicable_stages()[:1]
 
+    @api.depends("stage_id", "team_id")
+    def _compute_kanban_state(self):
+        self.kanban_state = "normal"
+
     @api.depends("team_id")
     def _compute_user_id(self):
         for ticket in self:
@@ -60,6 +64,7 @@ class HelpdeskTicket(models.Model):
     number = fields.Char(string="Ticket number", default="/", readonly=True)
     name = fields.Char(string="Title", required=True)
     description = fields.Html(required=True, sanitize_style=True)
+    notes = fields.Html(string="Internal notes")
     user_id = fields.Many2one(
         comodel_name="res.users",
         string="Assigned user",
@@ -146,6 +151,12 @@ class HelpdeskTicket(models.Model):
             ("done", "Ready for next stage"),
             ("blocked", "Blocked"),
         ],
+        compute="_compute_kanban_state",
+        copy=False,
+        default="normal",
+        required=True,
+        readonly=False,
+        store=True,
     )
     sequence = fields.Integer(
         index=True,

@@ -149,7 +149,42 @@
                         domain="[]"
                         context="{'group_by':'tag_ids'}"
                     />
+                    <filter
+                        string="Kanban State"
+                        name="kanban_state"
+                        context="{'group_by': 'kanban_state'}"
+                    />
                 </group>
+                <searchpanel>
+                    <field
+                        name="team_id"
+                        string="Team"
+                        icon="fa-users"
+                        enable_counters="1"
+                        select="multi"
+                    />
+                    <field
+                        name="category_id"
+                        string="Category"
+                        icon="fa-folder"
+                        enable_counters="1"
+                        select="multi"
+                    />
+                    <field
+                        name="kanban_state"
+                        string="Kanban State"
+                        icon="fa-folder"
+                        enable_counters="1"
+                        select="multi"
+                    />
+                    <field
+                        name="commercial_partner_id"
+                        string="Commercial Entity"
+                        icon="fa-building"
+                        enable_counters="1"
+                        select="multi"
+                    />
+                </searchpanel>
             </search>
         </field>
     </record>
@@ -236,6 +271,7 @@
                                 widget="many2one_avatar_user"
                             />
                             <field name="priority" widget="priority" />
+                            <field name="user_id" options="{'always_reload': True}" />
                             <field
                                 name="company_id"
                                 options="{'no_create': True}"
@@ -243,6 +279,7 @@
                             />
                             <field name="create_date" readonly="1" />
                             <field name="channel_id" />
+                            <field name="kanban_state" widget="state_selection" />
                         </group>
                         <group>
                             <field name="partner_id" />
@@ -260,12 +297,25 @@
                     <notebook>
                         <page string="Description" name="description">
                             <field name="description" widget="html" />
+                            <field
+                                name="description"
+                                widget="html"
+                                options="{'collaborative': true, 'resizable': false}"
+                            />
+                            <label for="notes" />
+                            <field
+                                name="notes"
+                                nolabel="1"
+                                type="html"
+                                options="{'collaborative': true, 'resizable': false}"
+                            />
                         </page>
                         <page string="Other Information" name="other_info">
                             <group>
                                 <field name="last_stage_update" readonly="1" />
                                 <field name="assigned_date" readonly="1" />
                                 <field name="closed_date" readonly="1" />
+                                <field name="sequence" groups="base.group_no_one" />
                             </group>
                         </page>
                     </notebook>
@@ -314,6 +364,7 @@
                     decoration-info="unattended == True"
                     decoration-muted="closed == True"
                 />
+                <field name="kanban_state" widget="state_selection" optional="hide" />
             </list>
         </field>
     </record>
