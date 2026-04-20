@@ -271,7 +271,6 @@
                                 widget="many2one_avatar_user"
                             />
                             <field name="priority" widget="priority" />
-                            <field name="user_id" options="{'always_reload': True}" />
                             <field
                                 name="company_id"
                                 options="{'no_create': True}"
@@ -297,11 +296,6 @@
                     <notebook>
                         <page string="Description" name="description">
                             <field name="description" widget="html" />
-                            <field
-                                name="description"
-                                widget="html"
-                                options="{'collaborative': true, 'resizable': false}"
-                            />
                             <label for="notes" />
                             <field
                                 name="notes"
